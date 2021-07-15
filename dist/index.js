@@ -8638,7 +8638,8 @@ function createCheck(name, title, annotations, numErrors, conclusion) {
         }
         const req = Object.assign(Object.assign({}, github_2.context.repo), { ref: sha });
         const res = yield octokit.checks.listForRef(req);
-        core.debug(`Current Response: '${res.data}'`);
+        var res1 = JSON.stringify(res, null, 4);
+        core.debug(`Current Response: '${res1}'`);
         const existingCheckRun = res.data.check_runs.find(check => check.name === name);
         if (!existingCheckRun) {
             const createRequest = Object.assign(Object.assign({}, github_2.context.repo), { head_sha: sha, conclusion,
