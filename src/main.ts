@@ -124,8 +124,9 @@ async function createCheck(
         annotations
       }
     }
-
+    core.debug(`Creating new check`)
     await octokit.checks.create(createRequest)
+    core.debug(`Created new check`)
   } else {
     const check_run_id = existingCheckRun.id
 
@@ -140,8 +141,9 @@ async function createCheck(
         annotations
       }
     }
-
+    core.debug(`Updating existing check`)
     await octokit.checks.update(update_req)
+    core.debug(`Updated existing check`)
   }
 }
 

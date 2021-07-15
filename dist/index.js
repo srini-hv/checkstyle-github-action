@@ -8646,7 +8646,9 @@ function createCheck(name, title, annotations, numErrors, conclusion) {
                     summary: `${numErrors} violation(s) found`,
                     annotations
                 } });
+            core.debug(`Creating new check`);
             yield octokit.checks.create(createRequest);
+            core.debug(`Created new check`);
         }
         else {
             const check_run_id = existingCheckRun.id;
@@ -8656,7 +8658,9 @@ function createCheck(name, title, annotations, numErrors, conclusion) {
                     summary: `${numErrors} violation(s) found`,
                     annotations
                 } });
+            core.debug(`Updating existing check`);
             yield octokit.checks.update(update_req);
+            core.debug(`Updated existing check`);
         }
     });
 }
