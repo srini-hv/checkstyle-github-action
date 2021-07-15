@@ -8641,29 +8641,33 @@ function createCheck(name, title, annotations, numErrors, conclusion) {
         var res1 = JSON.stringify(res, null, 4);
         core.debug(`Current Response: '${res1}'`);
         const existingCheckRun = res.data.check_runs.find(check => check.name === name);
-        if (!existingCheckRun) {
-            const createRequest = Object.assign(Object.assign({}, github_2.context.repo), { head_sha: sha, conclusion,
-                name, status: 'completed', output: {
-                    title,
-                    summary: `${numErrors} violation(s) found`,
-                    annotations
-                } });
-            core.debug(`Creating new check`);
-            yield octokit.checks.create(createRequest);
-            core.debug(`Created new check`);
-        }
-        else {
-            const check_run_id = existingCheckRun.id;
-            const update_req = Object.assign(Object.assign({}, github_2.context.repo), { conclusion,
-                check_run_id, status: 'completed', output: {
-                    title,
-                    summary: `${numErrors} violation(s) found`,
-                    annotations
-                } });
-            core.debug(`Updating existing check`);
-            yield octokit.checks.update(update_req);
-            core.debug(`Updated existing check`);
-        }
+        //if (!existingCheckRun) {
+        const createRequest = Object.assign(Object.assign({}, github_2.context.repo), { head_sha: sha, conclusion,
+            name, status: 'completed', output: {
+                title,
+                summary: `${numErrors} violation(s) found`,
+                annotations
+            } });
+        core.debug(`Creating new check`);
+        yield octokit.checks.create(createRequest);
+        core.debug(`Created new check`);
+        // } else {
+        //   const check_run_id = existingCheckRun.id
+        //   const update_req = {
+        //     ...context.repo,
+        //     conclusion,
+        //     check_run_id,
+        //     status: <const>'completed',
+        //     output: {
+        //       title,
+        //       summary: `${numErrors} violation(s) found`,
+        //       annotations
+        //     }
+        //   }
+        //   core.debug(`Updating existing check`)
+        //   await octokit.checks.update(update_req)
+        //   core.debug(`Updated existing check`)
+        // }
     });
 }
 run();

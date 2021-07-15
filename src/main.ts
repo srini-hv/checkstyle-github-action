@@ -113,40 +113,40 @@ async function createCheck(
     check => check.name === name
   )
 
-  if (!existingCheckRun) {
-    const createRequest = {
-      ...context.repo,
-      head_sha: sha,
-      conclusion,
-      name,
-      status: <const>'completed',
-      output: {
-        title,
-        summary: `${numErrors} violation(s) found`,
-        annotations
-      }
+  //if (!existingCheckRun) {
+  const createRequest = {
+    ...context.repo,
+    head_sha: sha,
+    conclusion,
+    name,
+    status: <const>'completed',
+    output: {
+      title,
+      summary: `${numErrors} violation(s) found`,
+      annotations
     }
-    core.debug(`Creating new check`)
-    await octokit.checks.create(createRequest)
-    core.debug(`Created new check`)
-  } else {
-    const check_run_id = existingCheckRun.id
-
-    const update_req = {
-      ...context.repo,
-      conclusion,
-      check_run_id,
-      status: <const>'completed',
-      output: {
-        title,
-        summary: `${numErrors} violation(s) found`,
-        annotations
-      }
-    }
-    core.debug(`Updating existing check`)
-    await octokit.checks.update(update_req)
-    core.debug(`Updated existing check`)
   }
+  core.debug(`Creating new check`)
+  await octokit.checks.create(createRequest)
+  core.debug(`Created new check`)
+  // } else {
+  //   const check_run_id = existingCheckRun.id
+
+  //   const update_req = {
+  //     ...context.repo,
+  //     conclusion,
+  //     check_run_id,
+  //     status: <const>'completed',
+  //     output: {
+  //       title,
+  //       summary: `${numErrors} violation(s) found`,
+  //       annotations
+  //     }
+  //   }
+  //   core.debug(`Updating existing check`)
+  //   await octokit.checks.update(update_req)
+  //   core.debug(`Updated existing check`)
+  // }
 }
 
 run()
